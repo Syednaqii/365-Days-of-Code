@@ -1,0 +1,59 @@
+void swap(int * a, int * b)
+{
+    int temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+void sort1(vector<int>& arr,vector<int> & arr1)
+{
+    int minimum = 0;
+    for (int i = 0; i < arr.size(); i++)
+    {
+        minimum = i;
+        for (int j = i + 1; j < arr.size(); j++)
+        {
+            if (arr[j] < arr[minimum] || (arr[j]<=arr[minimum] && arr1[j]<arr1[minimum]))
+            {
+                minimum = j;
+            }
+        }
+        swap(&arr[minimum], &arr[i]);
+        swap(&arr1[minimum], &arr1[i]);
+        
+    }
+}
+class Solution 
+{
+public:
+    vector<int> kWeakestRows(vector<vector<int>>& mat, int k)
+    {
+        vector<int> a;
+        int c1 = 0;
+
+        for (vector<int> vect1D : mat)
+        {
+            c1 = 0;
+            for (int x : vect1D)
+            {
+                if (x == 1)
+                {
+                    c1++;
+                }
+            }
+            a.push_back(c1);
+        }
+        vector<int> ans;
+        for (int i = 0; i < a.size(); i++)
+        {
+            ans.push_back(i);
+        }
+        sort1(a,ans);
+        int s = ans.size() - k;
+        for (int i = 0; i < s; i++)
+        {
+            ans.pop_back();
+        }
+        return ans;
+    }
+};
