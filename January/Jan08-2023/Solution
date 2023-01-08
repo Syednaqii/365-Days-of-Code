@@ -1,0 +1,102 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+
+std::string add(std::string str1, std::string str2) {
+    // Check if one of the strings is empty
+    if (str1.empty()) {
+        return str2;
+    }
+    if (str2.empty()) {
+        return str1;
+    }
+
+    // Check if one of the strings has a greater length
+    if (str1.length() > str2.length()) {
+        std::swap(str1, str2);
+    }
+
+    // Initialize result string
+    std::string result;
+
+    // Initialize carry to 0
+    int carry = 0;
+
+    // Iterate through both strings
+    int i = str1.length() - 1;
+    int j = str2.length() - 1;
+    while (i >= 0 || j >= 0 || carry > 0) {
+        // Add the digits and the carry
+        int sum = carry;
+        if (i >= 0) {
+            sum += str1[i] - '0';
+            i--;
+        }
+        if (j >= 0) {
+            sum += str2[j] - '0';
+            j--;
+        }
+        // Store the last digit in the result string
+        result += (sum % 10) + '0';
+        // Update the carry
+        carry = sum / 10;
+    }
+
+    // Reverse the result string
+    std::reverse(result.begin(), result.end());
+
+    return result;
+}
+class Solution {
+public:
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2)
+    {
+        ListNode* a = l1;
+        ListNode* b = l2;
+        stack<int> n;
+        stack<int> n1;
+        while (a != NULL)
+        {
+            n.push(a->val);
+            a = a->next;
+        }
+        while (b != NULL)
+        {
+            n1.push(b->val);
+            b = b->next;
+        }
+        string f = "", s = "";
+        while (!n.empty())
+        {
+            f += to_string(n.top());
+            n.pop();
+        }
+        while (!n1.empty())
+        {
+            s += to_string(n1.top());
+            n1.pop();
+        }
+        string q = add(f, s);
+        int size = q.size() - 1;
+        ListNode* final = new ListNode(int(q[size]) - 48);
+        ListNode* temp = final;
+        size--;
+        for (int i = size; i>=0; i--)
+        {
+            ListNode* newnode = new ListNode(int(q[i]) - 48);
+            temp->next = newnode;
+            temp = temp->next;
+        }
+        return final;
+
+
+    }
+};
+
